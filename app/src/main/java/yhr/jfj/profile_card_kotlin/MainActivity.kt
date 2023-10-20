@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -49,7 +50,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun createBizCard() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        Card(
+            modifier = Modifier
+                .width(200.dp)
+                .height(390.dp)
+                .padding(12.dp) ,
+            shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+            colors = cardColors(Color.White),
+            elevation = cardElevation(5.dp)
+        ) {
 
+        }
+    }
 }
 
 @Preview(showBackground = true)
