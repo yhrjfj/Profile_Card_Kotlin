@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,15 +50,30 @@ fun ProfilePage() {
             ProfileStats(count = "500", title = "Following")
             ProfileStats(count = "20", title = "Post")
         }
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Follow")
+            }
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Message")
+            }
+        }
     }
 }
+
 @Composable
-private fun ProfileStats(count: String, title: String){
+private fun ProfileStats(count: String, title: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = count, fontWeight = FontWeight.Bold)
         Text(text = title)
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun ProfilePagePreview() {
