@@ -45,22 +45,19 @@ fun ProfilePage() {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "150", fontWeight = FontWeight.Bold)
-                Text(text = "Following")
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "500", fontWeight = FontWeight.Bold)
-                Text(text = "Follower")
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "20", fontWeight = FontWeight.Bold)
-                Text(text = "Post")
-            }
+            ProfileStats(count = "130", title = "Follower")
+            ProfileStats(count = "500", title = "Following")
+            ProfileStats(count = "20", title = "Post")
         }
     }
 }
-
+@Composable
+private fun ProfileStats(count: String, title: String){
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = count, fontWeight = FontWeight.Bold)
+        Text(text = title)
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun ProfilePagePreview() {
