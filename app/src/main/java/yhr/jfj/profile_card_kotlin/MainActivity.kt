@@ -44,29 +44,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(name = "SH")
+                    ProfilePage()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String){
-    Text(text = "Hello $name")
-}
-
-@Composable
-fun MyApp(){
-    Text(text = "Welcome",
-        fontSize = 25.sp
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    Profile_Card_KotlinTheme {
-        MyApp()
-    }
+
 }
