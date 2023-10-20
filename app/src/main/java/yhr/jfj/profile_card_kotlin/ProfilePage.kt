@@ -47,8 +47,9 @@ fun ProfilePage() {
             val constraints = if (minWidth < 600.dp) {
                 portraitConstraints(16.dp)
             } else {
-                // TODO: Landscape Constraints
+//                landscapeConstraints(16.dp)
                 portraitConstraints(16.dp)
+
             }
 
             ConstraintLayout(constraints) {
@@ -95,6 +96,7 @@ fun ProfilePage() {
     }
 }
 
+// Portrait
 private fun portraitConstraints(margin: Dp): ConstraintSet {
     return ConstraintSet {
         val image = createRefFor("image")
@@ -103,11 +105,11 @@ private fun portraitConstraints(margin: Dp): ConstraintSet {
         val rowStats = createRefFor("rowStats")
         val followButton = createRefFor("followButton")
         val messageButton = createRefFor("messageButton")
-        val guideLine_Top = createRefFor("guideLine_Top")
+        val guideLine_Top = createGuidelineFromTop(0.2f)
 
         // Image
         constrain(image) {
-            top.linkTo(parent.top)
+            top.linkTo(guideLine_Top)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
