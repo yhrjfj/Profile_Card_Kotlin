@@ -3,6 +3,7 @@ package yhr.jfj.profile_card_kotlin
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,12 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 
 @Composable
 fun ProfilePage() {
@@ -39,70 +43,103 @@ fun ProfilePage() {
             .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(10.dp)),
         elevation = CardDefaults.cardElevation(6.dp),
     ) {
-        ConstraintLayout {
-            val guideLine_Top = createGuidelineFromTop(0.2f)
-
-            // Names for constains
-            val (image, nameText, countryText, rowStats, followButton, messageButton) = createRefs()
-
-            Image(
-                painter = painterResource(id = R.drawable.profile_picture),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(200.dp)
-                    .clip(CircleShape)
-                    .border(width = 2.dp, color = Color.Red, shape = CircleShape)
-                    .constrainAs(image) {
-                        top.linkTo(guideLine_Top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                contentScale = ContentScale.Crop
-            )
-            Text(text = "Anime", modifier = Modifier.padding(16.dp).constrainAs(nameText){
-                top.linkTo(image.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            })
-            Text(text = "Japan", modifier = Modifier.constrainAs(countryText){
-                top.linkTo(nameText.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            })
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp).constrainAs(rowStats){
-                        top.linkTo(countryText.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            ) {
-                ProfileStats(count = "130", title = "Follower")
-                ProfileStats(count = "500", title = "Following")
-                ProfileStats(count = "20", title = "Post")
+        BoxWithConstraints() {
+            val constraints = if (minWidth < 600.dp) {
+                portraitConstraints(16.dp)
+            } else {
+                // TODO: Landscape Constraints
+                portraitConstraints(16.dp)
             }
 
-            Button(onClick = { /*TODO*/ },
-                modifier = Modifier.constrainAs(followButton){
-                    top.linkTo(rowStats.bottom, margin = 16.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(messageButton.start)
-                }
+            ConstraintLayout(constraints) {
+                Image(
+                    painter = painterResource(id = R.drawable.profile_picture),
+                    contentDescription = "Profile Picture",
+                    modifier = Modifier
+                        .size(200.dp)
+                        .clip(CircleShape)
+                        .border(width = 2.dp, color = Color.Red, shape = CircleShape)
+                        .layoutId("image"),
+                    contentScale = ContentScale.Crop
+                )
+                Text(
+                    text = "Anime", modifier = Modifier
+                        .padding(16.dp)
+                        .layoutId("nameText")
+                )
+                Text(text = "Japan", modifier = Modifier.layoutId("countryText"))
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .layoutId("rowStats")
                 ) {
-                Text(text = "Follow")
-            }
-            Button(onClick = { /*TODO*/ },
-                modifier = Modifier.constrainAs(messageButton){
-                    top.linkTo(rowStats.bottom, margin = 16.dp)
-                    start.linkTo(followButton.end)
-                    end.linkTo(parent.end)
+                    ProfileStats(count = "130", title = "Follower")
+                    ProfileStats(count = "500", title = "Following")
+                    ProfileStats(count = "20", title = "Post")
                 }
-            ) {
-                Text(text = "Message")
-            }
 
+                Button(
+                    onClick = { /*TODO*/ }, modifier = Modifier.layoutId("followButton")
+                ) {
+                    Text(text = "Follow")
+                }
+                Button(
+                    onClick = { /*TODO*/ }, modifier = Modifier.layoutId("messageButton")
+                ) {
+                    Text(text = "Message")
+                }
+            }
+        }
+    }
+}
+
+private fun portraitConstraints(margin: Dp): ConstraintSet {
+    return ConstraintSet {
+        val image = createRefFor("image")
+        val nameText = createRefFor("nameText")
+        val countryText = createRefFor("countryText")
+        val rowStats = createRefFor("rowStats")
+        val followButton = createRefFor("followButton")
+        val messageButton = createRefFor("messageButton")
+        val guideLine_Top = createRefFor("guideLine_Top")
+
+        // Image
+        constrain(image) {
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+        // Name
+        constrain(nameText) {
+            top.linkTo(image.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+        // Country
+        constrain(countryText) {
+            top.linkTo(nameText.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+        // Row for status
+        constrain(rowStats) {
+            top.linkTo(countryText.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+        // Follow Button
+        constrain(followButton) {
+            top.linkTo(rowStats.bottom, margin = margin)
+            start.linkTo(parent.start)
+            end.linkTo(messageButton.start)
+        }
+        // Message Button
+        constrain(messageButton) {
+            top.linkTo(rowStats.bottom, margin = margin)
+            start.linkTo(followButton.end)
+            end.linkTo(parent.end)
         }
     }
 }
