@@ -8,8 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,42 +31,51 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProfilePage() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth(),
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 100.dp, bottom = 100.dp, start = 16.dp, end = 16.dp)
+            .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(10.dp)),
+        elevation = CardDefaults.cardElevation(6.dp),
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.profile_picture),
-            contentDescription = "Profile Picture",
-            modifier = Modifier
-                .size(200.dp)
-                .clip(CircleShape)
-                .border(width = 2.dp, color = Color.Red, shape = CircleShape),
-            contentScale = ContentScale.Crop
-        )
-        Text(text = "Anime")
-        Text(text = "Japan")
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+        Column(
+            Modifier.verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            ProfileStats(count = "130", title = "Follower")
-            ProfileStats(count = "500", title = "Following")
-            ProfileStats(count = "20", title = "Post")
-        }
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Follow")
+            Image(
+                painter = painterResource(id = R.drawable.profile_picture),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(CircleShape)
+                    .border(width = 2.dp, color = Color.Red, shape = CircleShape),
+                contentScale = ContentScale.Crop
+            )
+            Text(text = "Anime")
+            Text(text = "Japan")
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                ProfileStats(count = "130", title = "Follower")
+                ProfileStats(count = "500", title = "Following")
+                ProfileStats(count = "20", title = "Post")
             }
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Message")
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Follow")
+                }
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Message")
+                }
             }
         }
     }
