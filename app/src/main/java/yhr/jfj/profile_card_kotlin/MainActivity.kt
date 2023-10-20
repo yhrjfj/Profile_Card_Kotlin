@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.pm.ShortcutInfoCompat
 import yhr.jfj.profile_card_kotlin.ui.theme.Profile_Card_KotlinTheme
 
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    createBizCard()
+                    Greeting(name = "SH")
                 }
             }
         }
@@ -51,37 +52,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun createBizCard() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-    ) {
-        Card(
-            modifier = Modifier
-                .width(200.dp)
-                .height(390.dp)
-                .padding(12.dp),
-            shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-            colors = cardColors(Color.White),
-            elevation = cardElevation(5.dp)
-        ) {
-            Surface(modifier = Modifier.size(150.dp)
-                .padding(5.dp),
-                shape= CircleShape,
-                border = BorderStroke(0.5.dp, color = Color.LightGray),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-            ){
-                Image(painterResource(R.drawable.profile_picture), contentDescription = "Profile image" )
-            }
-        }
-    }
+fun Greeting(name: String){
+    Text(text = "Hello $name")
+}
+
+@Composable
+fun MyApp(){
+    Text(text = "Welcome",
+        fontSize = 25.sp
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Profile_Card_KotlinTheme {
-        createBizCard()
+        MyApp()
     }
 }
