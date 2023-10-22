@@ -34,7 +34,7 @@ fun ProfilePage() {
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 50.dp, bottom = 100.dp, start = 16.dp, end = 16.dp)
-            .border(width = 2.dp, color = Color.White, shape = RoundedCornerShape(30.dp)),
+            .border(width = 2.dp, color = Color.White, shape = RoundedCornerShape(10.dp)),
         elevation = CardDefaults.cardElevation(6.dp),
     ) {
         BoxWithConstraints {
