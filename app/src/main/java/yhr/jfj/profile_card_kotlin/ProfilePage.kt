@@ -37,24 +37,12 @@ fun ProfilePage() {
             .border(width = 2.dp, color = Color.White, shape = RoundedCornerShape(30.dp)),
         elevation = CardDefaults.cardElevation(6.dp),
     ) {
-        /**
-         * Todo 2 We use a BoxConstraint Widget to access the minimum width
-         * and check if its less than 600 then it should display the elements using
-         * the constraint sets portraitConstraints method
-         */
         BoxWithConstraints {
             val constraints = if (minWidth < 600.dp) {
                 portraitConstraints(margin = 16.dp)
             } else {
-                /**Todo 5: Use the landscape constraint sets if the minimum width is greater than 600
-                 * and pass in 16dp as margin for the elements using it
-                 */
                 landScapeConstraints(margin = 16.dp)
             }
-            /**Todo 3 then we use the ConstraintLayout widget for creating the element
-             * and with the modifier we set the layout id for each element to match the reference
-             * created within the ContstraintSets
-             */
             ConstraintLayout(constraints) {
                 Image(
                     painter = painterResource(id = R.drawable.profile_picture),
@@ -67,10 +55,10 @@ fun ProfilePage() {
                     contentScale = ContentScale.Crop
                 )
                 Text(
-                    text = "Siberian Husky", fontWeight = FontWeight.Bold,
+                    text = "Anime", fontWeight = FontWeight.Bold,
                     modifier = Modifier.layoutId("nameText")
                 )
-                Text(text = "Germany", modifier = Modifier.layoutId("countryText"))
+                Text(text = "Japan", modifier = Modifier.layoutId("countryText"))
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier
@@ -101,14 +89,6 @@ fun ProfilePage() {
 
     }
 }
-
-/**
- * Todo 1 : We create a constraintSet for the portrait orientation
- * with a @param[margin] to add spacing between required elements
- * creating a reference id for each composable
- * Then we constrain each element to each other using the ids
- */
-
 private fun portraitConstraints(margin: Dp): ConstraintSet {
     return ConstraintSet {
         val image = createRefFor("image")
@@ -117,14 +97,14 @@ private fun portraitConstraints(margin: Dp): ConstraintSet {
         val rowStats = createRefFor("rowstats")
         val buttonFollow = createRefFor("buttonFollow")
         val buttonMessage = createRefFor("buttonMessage")
-        val guideLine = createGuidelineFromTop(0.3f)
+        val guideLine = createGuidelineFromTop(0.4f)
         constrain(image) {
             top.linkTo(guideLine)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
         constrain(nameText) {
-            top.linkTo(image.bottom)
+            top.linkTo(image.bottom, margin = margin/2)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
@@ -150,13 +130,6 @@ private fun portraitConstraints(margin: Dp): ConstraintSet {
         }
     }
 }
-
-/**
- * Todo 4 : We create a constraintSet for the landscape orientation
- * with @param[margin] for adding equal spaces between required element
- * and creating a reference id for each composable
- * Then we constrain each element to each other using the ids
- */
 private fun landScapeConstraints(margin: Dp): ConstraintSet {
     return ConstraintSet {
         val image = createRefFor("image")
