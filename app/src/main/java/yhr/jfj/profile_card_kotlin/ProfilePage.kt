@@ -2,13 +2,7 @@ package yhr.jfj.profile_card_kotlin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,128 +19,190 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 
 @Composable
 fun ProfilePage() {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 100.dp, bottom = 100.dp, start = 16.dp, end = 16.dp)
-            .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(10.dp)),
+            .fillMaxSize()
+            .padding(top = 50.dp, bottom = 100.dp, start = 16.dp, end = 16.dp)
+            .border(width = 2.dp, color = Color.White, shape = RoundedCornerShape(30.dp)),
         elevation = CardDefaults.cardElevation(6.dp),
     ) {
-        BoxWithConstraints() {
+        /**
+         * Todo 2 We use a BoxConstraint Widget to access the minimum width
+         * and check if its less than 600 then it should display the elements using
+         * the constraint sets portraitConstraints method
+         */
+        BoxWithConstraints {
             val constraints = if (minWidth < 600.dp) {
-                portraitConstraints(16.dp)
+                portraitConstraints(margin = 16.dp)
             } else {
-//                landscapeConstraints(16.dp)
-                portraitConstraints(16.dp)
-
+                /**Todo 5: Use the landscape constraint sets if the minimum width is greater than 600
+                 * and pass in 16dp as margin for the elements using it
+                 */
+                landScapeConstraints(margin = 16.dp)
             }
-
+            /**Todo 3 then we use the ConstraintLayout widget for creating the element
+             * and with the modifier we set the layout id for each element to match the reference
+             * created within the ContstraintSets
+             */
             ConstraintLayout(constraints) {
                 Image(
                     painter = painterResource(id = R.drawable.profile_picture),
-                    contentDescription = "Profile Picture",
+                    contentDescription = "husky",
                     modifier = Modifier
-                        .size(200.dp)
+                        .size(100.dp)
                         .clip(CircleShape)
                         .border(width = 2.dp, color = Color.Red, shape = CircleShape)
                         .layoutId("image"),
                     contentScale = ContentScale.Crop
                 )
                 Text(
-                    text = "Anime", modifier = Modifier
-                        .padding(16.dp)
-                        .layoutId("nameText")
+                    text = "Siberian Husky", fontWeight = FontWeight.Bold,
+                    modifier = Modifier.layoutId("nameText")
                 )
-                Text(text = "Japan", modifier = Modifier.layoutId("countryText"))
+                Text(text = "Germany", modifier = Modifier.layoutId("countryText"))
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
-                        .layoutId("rowStats")
+                        .padding(top = 16.dp)
+                        .layoutId("rowstats")
                 ) {
-                    ProfileStats(count = "130", title = "Follower")
-                    ProfileStats(count = "500", title = "Following")
-                    ProfileStats(count = "20", title = "Post")
+                    ProfileStats(count = "150", title = "Followers")
+                    ProfileStats(count = "100", title = "Following")
+                    ProfileStats(count = "30", title = "Posts")
                 }
 
                 Button(
-                    onClick = { /*TODO*/ }, modifier = Modifier.layoutId("followButton")
+                    onClick = {/*TODO*/ },
+                    modifier = Modifier.layoutId("buttonFollow")
                 ) {
-                    Text(text = "Follow")
+                    Text(text = "Follow User")
                 }
+
                 Button(
-                    onClick = { /*TODO*/ }, modifier = Modifier.layoutId("messageButton")
+                    onClick = {/*TODO*/ },
+                    modifier = Modifier.layoutId("buttonMessage")
                 ) {
-                    Text(text = "Message")
+                    Text(text = "Direct Message")
                 }
             }
         }
+
     }
 }
 
-// Portrait
+/**
+ * Todo 1 : We create a constraintSet for the portrait orientation
+ * with a @param[margin] to add spacing between required elements
+ * creating a reference id for each composable
+ * Then we constrain each element to each other using the ids
+ */
+
 private fun portraitConstraints(margin: Dp): ConstraintSet {
     return ConstraintSet {
         val image = createRefFor("image")
         val nameText = createRefFor("nameText")
         val countryText = createRefFor("countryText")
-        val rowStats = createRefFor("rowStats")
-        val followButton = createRefFor("followButton")
-        val messageButton = createRefFor("messageButton")
-        val guideLine_Top = createGuidelineFromTop(0.2f)
-
-        // Image
+        val rowStats = createRefFor("rowstats")
+        val buttonFollow = createRefFor("buttonFollow")
+        val buttonMessage = createRefFor("buttonMessage")
+        val guideLine = createGuidelineFromTop(0.3f)
         constrain(image) {
-            top.linkTo(guideLine_Top)
+            top.linkTo(guideLine)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
-        // Name
         constrain(nameText) {
             top.linkTo(image.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
-        // Country
         constrain(countryText) {
             top.linkTo(nameText.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
-        // Row for status
         constrain(rowStats) {
             top.linkTo(countryText.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
         }
-        // Follow Button
-        constrain(followButton) {
+        constrain(buttonFollow) {
             top.linkTo(rowStats.bottom, margin = margin)
             start.linkTo(parent.start)
-            end.linkTo(messageButton.start)
+            end.linkTo(buttonMessage.start)
+            width = Dimension.wrapContent
         }
-        // Message Button
-        constrain(messageButton) {
+        constrain(buttonMessage) {
             top.linkTo(rowStats.bottom, margin = margin)
-            start.linkTo(followButton.end)
+            start.linkTo(buttonFollow.end)
             end.linkTo(parent.end)
+            width = Dimension.wrapContent
+        }
+    }
+}
+
+/**
+ * Todo 4 : We create a constraintSet for the landscape orientation
+ * with @param[margin] for adding equal spaces between required element
+ * and creating a reference id for each composable
+ * Then we constrain each element to each other using the ids
+ */
+private fun landScapeConstraints(margin: Dp): ConstraintSet {
+    return ConstraintSet {
+        val image = createRefFor("image")
+        val nameText = createRefFor("nameText")
+        val countryText = createRefFor("countryText")
+        val rowStats = createRefFor("rowstats")
+        val buttonFollow = createRefFor("buttonFollow")
+        val buttonMessage = createRefFor("buttonMessage")
+        constrain(image) {
+            top.linkTo(parent.top, margin = margin)
+            start.linkTo(parent.start, margin = margin)
+        }
+        constrain(nameText) {
+            start.linkTo(image.start)
+            top.linkTo(image.bottom)
+        }
+        constrain(countryText) {
+            top.linkTo(nameText.bottom)
+            start.linkTo(nameText.start)
+            end.linkTo(nameText.end)
+        }
+        constrain(rowStats) {
+            top.linkTo(image.top)
+            start.linkTo(image.end, margin = margin)
+            end.linkTo(parent.end)
+        }
+
+        constrain(buttonFollow) {
+            top.linkTo(rowStats.bottom, margin = 16.dp)
+            start.linkTo(rowStats.start)
+            end.linkTo(buttonMessage.start)
+            bottom.linkTo(countryText.bottom)
+            width = Dimension.wrapContent
+        }
+        constrain(buttonMessage) {
+            top.linkTo(rowStats.bottom, margin = 16.dp)
+            start.linkTo(buttonFollow.end)
+            end.linkTo(parent.end)
+            bottom.linkTo(countryText.bottom)
+            width = Dimension.wrapContent
         }
     }
 }
 
 @Composable
-private fun ProfileStats(count: String, title: String) {
+fun ProfileStats(count: String, title: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = count, fontWeight = FontWeight.Bold)
         Text(text = title)
